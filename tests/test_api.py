@@ -8,14 +8,31 @@ or
 
 from __future__ import annotations
 
-import os
+import importlib.util
 import sys
+import types
 import unittest
+from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ROOT = Path(__file__).resolve().parent.parent
+PKG_DIR = ROOT / "custom_components" / "nokia_wifi_beacon"
 
-from custom_components.nokia_wifi_beacon.api import NokiaBeaconApi, NokiaError  # noqa: E402
+# Load const.py and api.py as a synthetic package so the integration's
+# __init__.py is not executed — it imports Home Assistant and voluptuous,
+# neither of which the unit tests need.
+_pkg = types.ModuleType("nokia_beacon_test")
+_pkg.__path__ = [str(PKG_DIR)]
+sys.modules["nokia_beacon_test"] = _pkg
+for _name in ("const", "api"):
+    _spec = importlib.util.spec_from_file_location(
+        f"nokia_beacon_test.{_name}", PKG_DIR / f"{_name}.py"
+    )
+    _mod = importlib.util.module_from_spec(_spec)
+    sys.modules[f"nokia_beacon_test.{_name}"] = _mod
+    _spec.loader.exec_module(_mod)
+
+from nokia_beacon_test.api import NokiaBeaconApi, NokiaError  # noqa: E402
 
 
 def _api() -> NokiaBeaconApi:
