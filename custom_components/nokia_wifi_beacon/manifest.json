@@ -7,7 +7,7 @@
   "config_flow": true,
   "iot_class": "local_polling",
   "requirements": [],
-  "version": "0.1.1",
+  "version": "0.1.2",
   "documentation": "https://github.com/flip555/homeassistant-nokia-beacon",
   "issue_tracker": "https://github.com/flip555/homeassistant-nokia-beacon/issues"
 }

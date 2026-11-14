@@ -10,7 +10,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE, UnitOfTime
+from homeassistant.const import PERCENTAGE, EntityCategory, UnitOfTime
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -38,7 +38,7 @@ async def async_setup_entry(
 
 class FirmwareSensor(NokiaEntity, SensorEntity):
     _attr_name = "Firmware"
-    _attr_entity_category = "diagnostic"
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
 
     def __init__(self, coordinator: NokiaCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "firmware")
@@ -52,7 +52,7 @@ class UptimeSensor(NokiaEntity, SensorEntity):
     _attr_name = "Uptime"
     _attr_device_class = SensorDeviceClass.DURATION
     _attr_native_unit_of_measurement = UnitOfTime.SECONDS
-    _attr_entity_category = "diagnostic"
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
 
     def __init__(self, coordinator: NokiaCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "uptime")
@@ -110,7 +110,7 @@ class PoolUtilisationSensor(NokiaEntity, SensorEntity):
     _attr_name = "DHCP pool utilisation"
     _attr_native_unit_of_measurement = PERCENTAGE
     _attr_state_class = SensorStateClass.MEASUREMENT
-    _attr_entity_category = "diagnostic"
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
 
     def __init__(self, coordinator: NokiaCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "pool_utilisation")
