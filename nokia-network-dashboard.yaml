@@ -1,0 +1,77 @@
+title: Network
+views:
+  - title: Devices
+    path: devices
+    icon: mdi:lan-connect
+    type: sections
+    max_columns: 1
+    sections:
+      - type: grid
+        cards:
+          - type: markdown
+            content: |
+              {% set t = states.device_tracker | selectattr('attributes.nokia', 'defined') | list %}
+              {% set home = t | selectattr('state', 'eq', 'home') | list %}
+              {% set away = t | rejectattr('state', 'eq', 'home') | list %}
+              ## {{ home | count }} online · {{ away | count }} offline
+              {{ t | count }} clients tracked by the Nokia gateway
+
+          - type: markdown
+            content: |
+              {% set t = states.device_tracker
+                   | selectattr('attributes.nokia', 'defined')
+                   | selectattr('state', 'eq', 'home')
+                   | sort(attribute='name') | list %}
+              ### 🟢 Online — {{ t | count }}
+
+              {% if t | count == 0 %}
+              Nothing is connected.
+              {% else %}
+              | Device | IP | MAC | Link |
+              |:--|:--|:--|:--|
+              {% for d in t -%}
+              | {{ d.name }} | {{ d.attributes.ip or '—' }} | {{ d.attributes.mac or '—' }} | {{ d.attributes.interface or '—' }} |
+              {% endfor %}
+              {% endif %}
+
+          - type: markdown
+            content: |
+              {% set t = states.device_tracker
+                   | selectattr('attributes.nokia', 'defined')
+                   | rejectattr('state', 'eq', 'home')
+                   | sort(attribute='name') | list %}
+              ### ⚪ Offline — {{ t | count }}
+
+              {% if t | count == 0 %}
+              Everything is online.
+              {% else %}
+              | Device | IP | MAC | State |
+              |:--|:--|:--|:--|
+              {% for d in t -%}
+              | {{ d.name }} | {{ d.attributes.ip or '—' }} | {{ d.attributes.mac or '—' }} | {{ d.state }} |
+              {% endfor %}
+              {% endif %}
+
+  - title: Gateway
+    path: gateway
+    icon: mdi:router-wireless
+    cards:
+      - type: entities
+        title: Nokia WiFi Beacon
+        entities:
+          - binary_sensor.nokia_wifi_wan
+          - sensor.nokia_wifi_firmware
+          - sensor.nokia_wifi_uptime
+          - sensor.nokia_wifi_dhcp_pool_utilisation
+          - sensor.nokia_wifi_reservations
+          - sensor.nokia_wifi_congestion_2_4_ghz
+          - sensor.nokia_wifi_congestion_5_ghz
+      - type: markdown
+        content: |
+          ### Reservations
+          {% set r = state_attr('sensor.nokia_wifi_reservations', 'reservations') or [] %}
+          | oid | MAC | IP |
+          |:--|:--|:--|
+          {% for row in r -%}
+          | {{ row.oid }} | {{ row.mac }} | {{ row.ip }} |
+          {% endfor %}

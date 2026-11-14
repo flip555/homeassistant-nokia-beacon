@@ -1,0 +1,63 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Nokia WiFi Beacon",
+        "description": "Enter the gateway's LAN address and its admin credentials.",
+        "data": {
+          "host": "Host",
+          "username": "Admin username",
+          "password": "Admin password"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Nokia WiFi Beacon",
+        "description": "Update the address or the admin credentials. This is what to use after changing the admin username or password on the gateway.",
+        "data": {
+          "host": "Host",
+          "username": "Admin username",
+          "password": "Admin password"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate",
+        "description": "The gateway rejected the stored password for {host}.",
+        "data": {
+          "password": "Admin password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "The gateway rejected those credentials.",
+      "cannot_connect": "Could not reach the gateway.",
+      "not_nokia": "That host answered but did not identify as a Nokia gateway.",
+      "unknown": "Unexpected error; check the logs."
+    },
+    "abort": {
+      "already_configured": "This gateway is already configured.",
+      "wrong_device": "The credentials belong to a different gateway.",
+      "reauth_successful": "Re-authentication succeeded.",
+      "reconfigure_successful": "Configuration updated."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Nokia WiFi Beacon options",
+        "data": {
+          "scan_interval": "Poll interval (seconds)"
+        }
+      }
+    }
+  },
+  "services": {
+    "add_reservation": {
+      "name": "Add DHCP reservation",
+      "description": "Create a static reservation on the Nokia gateway."
+    },
+    "delete_reservation": {
+      "name": "Delete DHCP reservation",
+      "description": "Remove a static reservation, by MAC or oid."
+    }
+  }
+}

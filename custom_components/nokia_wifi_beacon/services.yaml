@@ -1,0 +1,48 @@
+add_reservation:
+  name: Add DHCP reservation
+  description: Create a static reservation on the Nokia gateway.
+  fields:
+    mac:
+      name: MAC address
+      description: Client MAC, any case, colon or dash separated.
+      required: true
+      example: "aa:bb:cc:dd:ee:01"
+      selector:
+        text:
+    ip:
+      name: IP address
+      description: Address inside the DHCP pool.
+      required: true
+      example: "192.168.1.127"
+      selector:
+        text:
+    entry_id:
+      name: Gateway
+      description: Only needed when more than one gateway is configured.
+      required: false
+      selector:
+        text:
+
+delete_reservation:
+  name: Delete DHCP reservation
+  description: Remove a static reservation, by MAC or by its oid.
+  fields:
+    mac:
+      name: MAC address
+      required: false
+      example: "aa:bb:cc:dd:ee:01"
+      selector:
+        text:
+    oid:
+      name: Reservation oid
+      description: Taken from the reservations attribute of the Reservations sensor.
+      required: false
+      example: "29"
+      selector:
+        text:
+    entry_id:
+      name: Gateway
+      description: Only needed when more than one gateway is configured.
+      required: false
+      selector:
+        text:

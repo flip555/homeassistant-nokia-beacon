@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.bak*
+.storage/
+secrets.yaml
+*.log
+.DS_Store
